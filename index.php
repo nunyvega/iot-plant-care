@@ -117,7 +117,7 @@ $latestSoilTemperature = $sensorData[0]['soilTemperature'];
 </head>
 
 <body>
-  <h1>Plant care</h1>
+  <h1>Plant Care and Monitoring System</h1>
   <h2> At a Glance</h2>
   <div class="sensor-cards">
     <div class="sensor-card">
@@ -149,7 +149,7 @@ $latestSoilTemperature = $sensorData[0]['soilTemperature'];
   <h2>Your Plant Now:</h2>
   <div id="img-container">
     <img src="http://iot.bluehost-testsite-nunyvega.blog/uploads/camera.jpg" alt="Bonsai Tree"
-      style="width:500px;margin: auto;display: flex;">
+      style="width:70%;margin: auto;display: flex;">
   </div>
   <div id="all-charts-container">
     <div id="chart-moisture" class="chart-container"></div>
