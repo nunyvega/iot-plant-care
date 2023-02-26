@@ -9,80 +9,222 @@ $dbConfig = [
 
 $conn = new mysqli($dbConfig['host'], $dbConfig['user'], $dbConfig['pass'], $dbConfig['name']);
 if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
+  die("Connection failed: " . $conn->connect_error);
 }
 
-$sql = "SELECT id, value1, reading_time FROM Sensor ORDER BY reading_time DESC LIMIT 40";
+$sql = "SELECT id, moisture, humidity, airTemperature, soilTemperature, reading_time FROM Sensor ORDER BY reading_time DESC LIMIT 210";
 
 $result = $conn->query($sql);
 $sensorData = [];
-while ($data = $result->fetch_assoc()){
-    $sensorData[] = $data;
+while ($data = $result->fetch_assoc()) {
+  $sensorData[] = $data;
 }
 
-$readingsTime = array_column($sensorData, 'reading_time');
+$moisture = json_encode(array_reverse(array_column($sensorData, 'moisture')), JSON_NUMERIC_CHECK);
+$humidity = json_encode(array_reverse(array_column($sensorData, 'humidity')), JSON_NUMERIC_CHECK);
+$airTemperature = json_encode(array_reverse(array_column($sensorData, 'airTemperature')), JSON_NUMERIC_CHECK);
+$soilTemperature = json_encode(array_reverse(array_column($sensorData, 'soilTemperature')), JSON_NUMERIC_CHECK);
 
-$value1 = json_encode(array_reverse(array_column($sensorData, 'value1')), JSON_NUMERIC_CHECK);
-$readingTime = json_encode(array_reverse($readingsTime), JSON_NUMERIC_CHECK);
+$readingTime = json_encode(array_reverse(array_column($sensorData, 'reading_time')), JSON_NUMERIC_CHECK);
 
 $result->free();
 $conn->close();
+
+// Get the latest values of each sensor
+$latestMoisture = $sensorData[0]['moisture'];
+$latestHumidity = $sensorData[0]['humidity'];
+$latestAirTemperature = $sensorData[0]['airTemperature'];
+$latestSoilTemperature = $sensorData[0]['soilTemperature'];
+
 
 ?>
 
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta http-equiv="refresh" content="300">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <script src="https://code.highcharts.com/highcharts.js"></script>
-    <style>
-      body {
-        min-width: 310px;
-        max-width: 1280px;
-        height: 500px;
-        margin: 0 auto;
-      }
-      h2 {
-        font-family: Arial;
-        font-size: 2.5rem;
-        text-align: center;
-      }
-    </style>
-  </head>
-  <body>
-    <h2>Alvaro's plant soil moisture levels</h2>
-    <div id="chart-soilmoisture" class="container"></div>
-    <br>
-    <br>
-    <img src="http://iot.bluehost-testsite-nunyvega.blog/uploads/camera.jpg" alt="Bonsai Tree" style="width:500px;margin: auto;display: flex;">
-    <script>
-      var value1 = <?php echo $value1; ?>;
-      var readingTime = <?php echo $readingTime; ?>;
 
-      var chartT = new Highcharts.Chart({
-        chart: { renderTo: 'chart-soilmoisture' },
-        title: { text: 'Soil Moisture Level' },
-        series: [{
-          showInLegend: false,
-          data: value1
-        }],
-        plotOptions: {
-          line: {
-            animation: false,
-            dataLabels: { enabled: true }
-          },
-          series: { color: '#059e8a' }
+<head>
+  <meta http-equiv="refresh" content="300">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="https://code.highcharts.com/highcharts.js"></script>
+  <style>
+    body {
+      min-width: 310px;
+      max-width: 1280px;
+      height: 500px;
+      margin: 0 auto;
+    }
+
+    h2 {
+      font-family: Arial;
+      font-size: 2.5rem;
+      text-align: center;
+    }
+
+    .all-charts-container {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .chart-container {
+      display: flex;
+      flex: 1;
+    }
+
+    .sensor-cards {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .sensor-card {
+      flex-basis: calc(50% - 40px);
+      margin: 20px;
+      padding: 20px;
+      text-align: center;
+      background-color: #f2f2f2;
+      box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    }
+
+    .sensor-card h3 {
+      font-size: 1.5rem;
+      margin-bottom: 10px;
+    }
+
+    .sensor-card p {
+      font-size: 2rem;
+      font-weight: bold;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Plant care</h1>
+  <h2> At a Glance</h2>
+  <div class="sensor-cards">
+    <div class="sensor-card">
+      <h3>Moisture</h3>
+      <p>
+        <?php echo $latestMoisture; ?>
+      </p>
+    </div>
+    <div class="sensor-card">
+      <h3>Humidity</h3>
+      <p>
+        <?php echo $latestHumidity; ?>
+      </p>
+    </div>
+    <div class="sensor-card">
+      <h3>Air Temperature</h3>
+      <p>
+        <?php echo $latestAirTemperature; ?>
+      </p>
+    </div>
+    <div class="sensor-card">
+      <h3>Soil Temperature</h3>
+      <p>
+        <?php echo $latestSoilTemperature; ?>
+      </p>
+    </div>
+  </div>
+
+  <h2>Your plant now</h2>
+  <div id="img-container">
+    <img src="http://iot.bluehost-testsite-nunyvega.blog/uploads/camera.jpg" alt="Bonsai Tree"
+      style="width:500px;margin: auto;display: flex;">
+  </div>
+  <div id="all-charts-container">
+    <div id="chart-moisture" class="chart-container"></div>
+    <div id="chart-humidity" class="chart-container"></div>
+    <div id="chart-temperature" class="chart-container"></div>
+  </div>
+  <br>
+  <br>
+
+  <script>
+    var moisture = <?php echo $moisture; ?>;
+
+    var humidity = <?php echo $humidity; ?>;
+
+
+    var airTemperature = <?php echo $airTemperature; ?>;
+    var soilTemperature = <?php echo $soilTemperature; ?>;
+    var readingTime = <?php echo $readingTime; ?>;
+
+    const formattedDates = readingTime.map(date => {
+      const parsedDate = new Date(date);
+      return parsedDate.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+    });
+
+
+    var chartMoisture = new Highcharts.Chart({
+      chart: { renderTo: 'chart-moisture' },
+      title: { text: 'Moisture Data' },
+      series: [
+        { name: 'Moisture', data: moisture }
+      ],
+      plotOptions: {
+        line: {
+          animation: false,
+          dataLabels: { enabled: false }
         },
-        xAxis: {
-          type: 'datetime',
-          categories: readingTime
+        series: { color: 'DeepSkyBlue' }
+      },
+      xAxis: {
+        type: 'datetime',
+        categories: formattedDates
+      },
+      yAxis: {
+        title: { text: 'Value' }
+      },
+      credits: { enabled: false }
+    });
+
+    var chartHumidity = new Highcharts.Chart({
+      chart: { renderTo: 'chart-humidity' },
+      title: { text: 'Humidity Data' },
+      series: [
+        { name: 'Humidity', data: humidity, color: 'SteelBlue' }
+      ],
+      plotOptions: {
+        line: {
+          animation: false,
+          dataLabels: { enabled: true }
+        }
+      },
+      xAxis: {
+        type: 'datetime',
+        categories: formattedDates
+      },
+      yAxis: {
+        title: { text: 'Value' }
+      },
+      credits: { enabled: false }
+    });
+
+    var chartTemperature = new Highcharts.Chart({
+      chart: { renderTo: 'chart-temperature' },
+      title: { text: 'Temperature Data' },
+      series: [
+        { name: 'Air Temperature', data: airTemperature, color: 'DeepSkyBlue' },
+        { name: 'Soil Temperature', data: soilTemperature, color: 'Sienna' },
+      ],
+      plotOptions: {
+        line: {
+          animation: false,
+          dataLabels: { enabled: true }
         },
-        yAxis: {
-          title: { text: 'Relative Moisture' }
-        },
-        credits: { enabled: false }
-      });
-    </script>
-  </body>
+        series: { color: '#059e8a' }
+      },
+      xAxis: {
+        type: 'datetime',
+        categories: formattedDates
+      },
+      yAxis: {
+        title: { text: 'Value' }
+      },
+      credits: { enabled: false }
+    });
+  </script>
+</body>
+
 </html>
