@@ -54,10 +54,14 @@ $latestSoilTemperature = $sensorData[0]['soilTemperature'];
       margin: 0 auto;
     }
 
-    h2 {
+    h2, h1 {
       font-family: Arial;
-      font-size: 2.5rem;
+      font-size: 2rem;
       text-align: center;
+    }
+
+    h1 {
+        font-size: 3rem;
     }
 
     .all-charts-container {
@@ -68,6 +72,8 @@ $latestSoilTemperature = $sensorData[0]['soilTemperature'];
     .chart-container {
       display: flex;
       flex: 1;
+      border-radius: 30px;
+      margin:15px;
     }
 
     .sensor-cards {
@@ -77,12 +83,13 @@ $latestSoilTemperature = $sensorData[0]['soilTemperature'];
     }
 
     .sensor-card {
-      flex-basis: calc(50% - 40px);
+      flex-basis: calc(40% - 40px);
       margin: 20px;
       padding: 20px;
       text-align: center;
       background-color: #f2f2f2;
       box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+      border-radius: 30px;
     }
 
     .sensor-card h3 {
@@ -94,6 +101,18 @@ $latestSoilTemperature = $sensorData[0]['soilTemperature'];
       font-size: 2rem;
       font-weight: bold;
     }
+
+    body {
+      background-color: lightblue;
+    }
+
+    #img-container img{
+      border-radius: 30px;
+      border-color: white;
+      border-style: solid;
+      border-width: 15px;
+    }
+
   </style>
 </head>
 
@@ -104,30 +123,30 @@ $latestSoilTemperature = $sensorData[0]['soilTemperature'];
     <div class="sensor-card">
       <h3>Moisture</h3>
       <p>
-        <?php echo $latestMoisture; ?>
+        <?php echo $latestMoisture; ?>%
       </p>
     </div>
     <div class="sensor-card">
       <h3>Humidity</h3>
       <p>
-        <?php echo $latestHumidity; ?>
+        <?php echo $latestHumidity; ?>%
       </p>
     </div>
     <div class="sensor-card">
       <h3>Air Temperature</h3>
       <p>
-        <?php echo $latestAirTemperature; ?>
+        <?php echo $latestAirTemperature; ?>°
       </p>
     </div>
     <div class="sensor-card">
       <h3>Soil Temperature</h3>
       <p>
-        <?php echo $latestSoilTemperature; ?>
+        <?php echo $latestSoilTemperature; ?>°
       </p>
     </div>
   </div>
 
-  <h2>Your plant now</h2>
+  <h2>Your Plant Now:</h2>
   <div id="img-container">
     <img src="http://iot.bluehost-testsite-nunyvega.blog/uploads/camera.jpg" alt="Bonsai Tree"
       style="width:500px;margin: auto;display: flex;">
@@ -152,7 +171,7 @@ $latestSoilTemperature = $sensorData[0]['soilTemperature'];
 
     const formattedDates = readingTime.map(date => {
       const parsedDate = new Date(date);
-      return parsedDate.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+      return parsedDate.toLocaleTimeString('en-US', {month: "short", day: "numeric", hour: '2-digit', minute: '2-digit', hour12: false });
     });
 
 
