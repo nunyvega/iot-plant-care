@@ -22,6 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // If the request contains a photo, save it to a file
         // This means that the communication is coming from ESP32 CAM
         if ($_POST['photo']) {
+            error_log('img received');
             $imageData = ($_POST['photo']);
             $filename = 'camera.jpg';
             $filepath = 'uploads/' . $filename;
