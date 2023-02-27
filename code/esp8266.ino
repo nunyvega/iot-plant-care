@@ -1,10 +1,29 @@
+/*
+ESP8266 board code for the PLANT CARE INTEGRAL SYSTEM project.
+
+This program reads data from various sensors including a moisture sensor, a DHT11 humidity and temperature sensor, and a DS18B20 temperature sensor.
+The program controls a water pump based on the moisture level of the soil, and sends sensor data to a server.
+The host name and the API key are defined in the program.
+The current host name is "iot.bluehost-testsite-nunyvega.blog".
+The program also displays sensor data on an LCD display and on a Blynk app.
+
+Dependency libraries required:
+- ESP8266WiFi.h - Library for connecting to a WiFi network
+- ESP8266HTTPClient.h - Library for HTTP requests
+- LiquidCrystal_I2C.h - Library for LCD display
+- BlynkSimpleEsp8266.h - Library for Blynk app
+- OneWire.h - Library for DS18B20 temperature sensor
+- DallasTemperature.h - Library for DS18B20 temperature sensor
+- DHT.h - Library for DHT humidity and temperature sensor
+*/
+
 #include <ESP8266WiFi.h>
 #include <ESP8266HTTPClient.h>
 #include <LiquidCrystal_I2C.h>
 #include <BlynkSimpleEsp8266.h>
-#include <OneWire.h>  // Library for DS18B20 temperature sensor
-#include <DallasTemperature.h>  // Library for DS18B20 temperature sensor
-#include <DHT.h> // Library for DHT humidity and temperature sensor
+#include <OneWire.h>
+#include <DallasTemperature.h>
+#include <DHT.h>
 
 #define DHTPIN D7 // Pin where the DHT11 sensor is connected
 #define DHTTYPE DHT11 // DHT type is DHT11

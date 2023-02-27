@@ -1,4 +1,11 @@
 <?php
+/* This is the index file of a web page for a plant care and monitoring system. 
+The file retrieves data from a MySQL database containing sensor data for a plant's moisture level,
+humidity, air temperature, and soil temperature. It uses the Highcharts library to display this
+data in line charts on the web page, and also displays the latest values for each sensor in a 
+separate section. The web page also includes an image of the plant, retrieved from a camera, and 
+is set to refresh every 5 minutes.
+*/
 
 $dbConfig = [
   'host' => 'localhost',

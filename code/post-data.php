@@ -1,4 +1,12 @@
 <?php
+/*
+This file is a PHP script that receives data from an ESP32 CAM and an ESP8266
+and saves the data to a MySQL database. The file first sets the configuration values
+for the database and the API key value, then checks if the request method is POST.
+If the request contains a photo, it saves it to a file in the /uploads folder.
+If the request contains moisture data, it saves the data to the database.
+The file also contains a function to sanitize input data.
+*/
 
 // Set the configuration values for the database
 $dbConfig = [

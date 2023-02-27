@@ -1,3 +1,16 @@
+  /*
+  * This program captures an image using the ESP32-CAM board and uploads it to a web server.
+  * The captured image is sent to the server as a base64-encoded string.
+  * The web server is expected to decode the image and save it to a file.
+  * The host name and the API key are defined in the program.
+  * The current host name is "iot.bluehost-testsite-nunyvega.blog".
+  * The program uses the following libraries:
+  * - esp_camera.h: Provides APIs for configuring the camera and capturing images
+  * - WiFi.h: Provides APIs for connecting to a WiFi network
+  * - HTTPClient.h: Provides APIs for sending HTTP requests and receiving responses
+  * - base64.h: Provides APIs for encoding and decoding base64 strings
+  */
+
 #include "esp_camera.h"
 #include <WiFi.h>
 #include <HTTPClient.h>
