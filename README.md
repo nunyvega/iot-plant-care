@@ -89,4 +89,4 @@ Check the website for the latest values of the plant metrics and the plant pictu
 Use the Blynk app to turn on and off the water pump and LCD screen.
 
 ## Credits
-The PLANT CARE INTEGRAL SYSTEM was created by Alvaro Vega. Special thanks to the #cm3040-physical-computing-internet-of-things module team, Fritzing team for providing the circuit diagram software, to the Arduino team for creating the Arduino IDE, and the tens of creators that share their knowledge in tutorials online. 
+The PLANT CARE INTEGRAL SYSTEM was created by Alvaro Vega. Special thanks to the #cm3040-physical-computing-internet-of-things module and UOL team, Fritzing team for providing the circuit diagram software, to the Arduino team for creating the Arduino IDE, and the tens of creators that share their knowledge in tutorials online.
