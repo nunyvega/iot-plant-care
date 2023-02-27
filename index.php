@@ -54,14 +54,15 @@ $latestSoilTemperature = $sensorData[0]['soilTemperature'];
       margin: 0 auto;
     }
 
-    h2, h1 {
+    h2,
+    h1 {
       font-family: Arial;
       font-size: 2rem;
       text-align: center;
     }
 
     h1 {
-        font-size: 3rem;
+      font-size: 3rem;
     }
 
     .all-charts-container {
@@ -73,7 +74,7 @@ $latestSoilTemperature = $sensorData[0]['soilTemperature'];
       display: flex;
       flex: 1;
       border-radius: 30px;
-      margin:15px;
+      margin: 15px;
     }
 
     .sensor-cards {
@@ -106,13 +107,12 @@ $latestSoilTemperature = $sensorData[0]['soilTemperature'];
       background-color: lightblue;
     }
 
-    #img-container img{
+    #img-container img {
       border-radius: 30px;
       border-color: white;
       border-style: solid;
       border-width: 15px;
     }
-
   </style>
 </head>
 
@@ -171,7 +171,7 @@ $latestSoilTemperature = $sensorData[0]['soilTemperature'];
 
     const formattedDates = readingTime.map(date => {
       const parsedDate = new Date(date);
-      return parsedDate.toLocaleTimeString('en-US', {month: "short", day: "numeric", hour: '2-digit', minute: '2-digit', hour12: false });
+      return parsedDate.toLocaleTimeString('en-US', { month: "short", day: "numeric", hour: '2-digit', minute: '2-digit', hour12: false });
     });
 
 
