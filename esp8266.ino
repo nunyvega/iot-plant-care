@@ -30,6 +30,7 @@ LiquidCrystal_I2C lcd(0x27, 16, 2);
 BlynkTimer timer;
 bool relay = false;
 bool looped = false;
+bool screen = true;
 
 void setup() {
   // Start serial communication and set pin modes
@@ -74,7 +75,7 @@ void setup() {
   Serial.println(WiFi.localIP());
 }
 
-// Blynk virtual write function for controlling the water pump
+// Function to control the water pump
 BLYNK_WRITE(V1) {
   relay = param.asInt();
   if (relay) {
@@ -85,6 +86,16 @@ BLYNK_WRITE(V1) {
     digitalWrite(waterPump, HIGH);
     lcd.setCursor(0, 1);
     lcd.print("Motor is OFF");
+  }
+}
+
+// Function to control the screen backlight in case it bothers
+BLYNK_WRITE(V5) {
+  screen = param.asInt();
+  if (screen) {
+    lcd.backlight();
+  } else {
+    lcd.noBacklight();
   }
 }
 
@@ -122,6 +133,9 @@ void loop() {
 
   // Write moisture data to Blynk app
   Blynk.virtualWrite(V0, moisture);
+  Blynk.virtualWrite(V2, humidity);
+  Blynk.virtualWrite(V3, airTemperature);
+  Blynk.virtualWrite(V4, soilTemperature);
 
   // Write temperature data to LCD display
   //loop between moisture and humidity or temperature values
@@ -157,7 +171,7 @@ void loop() {
     Serial.println(httpResponseCode);
   }
 
-  // End HTTP connection and delay for 15 seconds
+  // End HTTP connection and delay for 5 seconds
   http.end();
-  delay(15000);
+  delay(5000);
 }
